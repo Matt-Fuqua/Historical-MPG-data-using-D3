@@ -4,7 +4,7 @@
   circle {fill: lightblue; stroke: black;}
   </style>
 <body onload='init()'>
-<svg width=600 height=600>
+<svg class ="chart" width=600 height=600>
 </svg>
 <script>
   
@@ -25,7 +25,7 @@ async function init() {
       .attr("r",2);
 */ 
   //add in the lines
-  d3.select("svg")
+  d3.select(".chart")
     .append("g")
     .attr("transform","translate(50,50)")
     .append("path")
@@ -38,7 +38,7 @@ async function init() {
         .y(function(d) { return +y(d.PassengerCarMPG) }));  
   
   // mark where domestic MPG starts in 1980
-  d3.select("svg")
+  d3.select(".chart")
     .append("g")
       .attr("transform","translate(50,50)")
       .append("circle")
@@ -48,7 +48,7 @@ async function init() {
       .attr("fill","black");
   
   // mark where import MPG starts in 1980
-    d3.select("svg")
+    d3.select(".chart")
     .append("g")
       .attr("transform","translate(50,50)")
       .append("circle")
@@ -58,13 +58,13 @@ async function init() {
       .attr("fill","black");
 
  // draw y axis
-  d3.select("svg")
+  d3.select(".chart")
     .append("g")
     .attr("transform","translate(50,50)")
     .call(d3.axisLeft(y));
   
   // draw x axis
-  d3.select("svg")
+  d3.select(".chart")
      .append("g")
      .attr("transform","translate(50,550)")
      .call(d3.axisBottom(x).tickFormat(d3.format('')));
