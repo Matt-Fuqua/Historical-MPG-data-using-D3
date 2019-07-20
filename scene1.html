@@ -7,6 +7,8 @@
 <svg width=600 height=600>
 </svg>
 <script>
+  
+  
 async function init() {
   var data = await d3.csv("https://mfuquaedu.github.io/mpgdata.csv");
   var y = d3.scaleLinear().domain([20,40]).range([500,0]);
@@ -32,8 +34,8 @@ async function init() {
       .attr("stroke", "steelblue")
       .attr("stroke-width", 1.5)
       .attr("d", d3.line()
-        .x(function(d) { return x(d.Year) })
-        .y(function(d) { return y(d.PassengerCarMPG) }));  
+        .x(function(d) { return +x(d.Year) })
+        .y(function(d) { return +y(d.PassengerCarMPG) }));  
   
   // mark where domestic MPG starts in 1980
   d3.select("svg")
@@ -55,17 +57,17 @@ async function init() {
       .attr("r",10)
       .attr("fill","black");
 
-  
+ // draw y axis
   d3.select("svg")
     .append("g")
     .attr("transform","translate(50,50)")
     .call(d3.axisLeft(y));
-          
-
-   d3.select("svg")
+  
+  // draw x axis
+  d3.select("svg")
      .append("g")
      .attr("transform","translate(50,550)")
-     .call(d3.axisBottom(x));
+     .call(d3.axisBottom(x).tickFormat(d3.format('')));
 
   }
 </script>
