@@ -1,12 +1,17 @@
 <html>
+
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <style> 
 //  circle {fill: lightblue; stroke: black;}
   </style>
 <body onload='init()'>
+  
+<h1>How has MPG for American made car comparted to foreign made over the years? </h1>
+  <button onclick="nextSlide()">See next slide </button>
+  
 <svg class ="chart" width=600 height=600>
 </svg>
- <title>How has MPG for American made car comparted to foreign made over the years? </title>
+  
 <script>
   
 // set the dimensions and margins of the graph
@@ -73,7 +78,54 @@ async function init() {
      .append("g")
      .attr("transform","translate(50,550)")
      .call(d3.axisBottom(x).tickFormat(d3.format('')));
-  }
+  
+  } // end of initial load
+function nextSlide(){
+  console.log("hello world");
+  d3.select("path").remove();
+  
+  var dataset;
+  d3.csv("https://mfuquaedu.github.io/mpgdataMeet.csv", function(error, data){
+    if(error){
+      console.log("unable to load mgpDataMeet.csv");
+    }
+    else{
+       console.log(data);
+      dataset = data;
+    }
+  });
+  
+ 
+    //add in the lines
+  d3.select(".chart")
+    .append("g")
+    .attr("transform","translate(50,50)")
+    .append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "red")
+      .attr("stroke-width", 1.5)
+      .attr("d", d3.line()
+        .x(function(d) { return +x(d.Year) })
+        .y(function(d) { return +y(d.DomesticMPG) }));  
+  
+    //add in the lines
+  d3.select(".chart")
+    .append("g")
+    .attr("transform","translate(50,50)")
+    .append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "green")
+      .attr("stroke-width", 1.5)
+      .attr("d", d3.line()
+        .x(function(d) { return +x(d.Year) })
+        .y(function(d) { return +y(d.ImportedMPG) }));  
+                                                             
+}
+                                                             
+ 
+         
 </script>
 </body>
 </html>
