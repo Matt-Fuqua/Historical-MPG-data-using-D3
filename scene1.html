@@ -7,26 +7,27 @@
 <body onload='init()'>
   
 <h1>How has MPG for American made car comparted to foreign made over the years? </h1>
-  <button onclick="nextSlide()">See next slide </button>
-  
-<svg class ="chart" width=600 height=600>
+
+<input type="button" value="See next slide" id = nextButton onclick="nextSlide()"</input>  
+
+  <svg class ="chart" width=600 height=600>
 </svg>
   
 <script>
-
   
 // set the dimensions and margins of the graph
 var margin = {top: 50, right: 50, bottom: 50, left: 50},
     width = 600 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
-
   var data;
+  var dataMeet;
   var y = d3.scaleLinear().domain([20,40]).range([500,0]);
   var x = d3.scaleLinear().domain([1980,2016]).range([0,500]);
+  var slideCount = 1;
   
 async function init() {
   data = await d3.csv("https://mfuquaedu.github.io/mpgdata.csv");
-
+  dataMeet = await d3.csv("https://mfuquaedu.github.io/mpgdataMeet.csv");
 /*
   //draw all the circle data points
   d3.select("svg")
@@ -37,7 +38,7 @@ async function init() {
       .attr("cx",function(d){return x(+d.Year);})
       .attr("cy",function(d){return y(+d.PassengerCarMPG);})
       .attr("r",2);
-*/ 
+ */
   //add in the lines
   d3.select(".chart")
     .append("g")
@@ -50,6 +51,7 @@ async function init() {
       .attr("d", d3.line()
         .x(function(d) { return +x(d.Year) })
         .y(function(d) { return +y(d.PassengerCarMPG) }));  
+  
   
   // mark where domestic MPG starts in 1980
   d3.select(".chart")
@@ -84,47 +86,61 @@ async function init() {
      .call(d3.axisBottom(x).tickFormat(d3.format('')));
   
   } // end of initial load
+
 function nextSlide(){
-  console.log("hello world");
-  d3.select("path").remove();
+  console.log(slideCount);
   
-//  var dataset;
- // d3.csv("https://mfuquaedu.github.io/mpgdataMeet.csv", function(error, data){
- //   if(error){
-//      console.log("unable to load mgpDataMeet.csv");
-//    }
-//    else{
- //      console.log(data);
- //     dataset = data;
- //   }
- // });
-  
- 
-    //add in the lines
-  d3.select(".chart")
-    .append("g")
-    .attr("transform","translate(50,50)")
-    .append("path")
-      .datum(data)
-      .attr("fill", "none")
-      .attr("stroke", "red")
-      .attr("stroke-width", 1.5)
-      .attr("d", d3.line()
-        .x(function(d) { return +x(d.Year) })
-        .y(function(d) { return +y(d.DomesticMPG) }));  
-  
-    //add in the lines
-  d3.select(".chart")
-    .append("g")
-    .attr("transform","translate(50,50)")
-    .append("path")
-      .datum(data)
-      .attr("fill", "none")
-      .attr("stroke", "green")
-      .attr("stroke-width", 1.5)
-      .attr("d", d3.line()
-        .x(function(d) { return +x(d.Year) })
-        .y(function(d) { return +y(d.ImportedMPG) }));  
+  // draw the second scene
+  if(slideCount == 1){
+    d3.select("path").remove();
+
+    //add in domestic MPG line
+    d3.select(".chart")
+      .append("g")
+      .attr("transform","translate(50,50)")
+      .append("path")
+        .datum(dataMeet)
+        .attr("fill", "none")
+        .attr("stroke", "red")
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+          .x(function(d) { return +x(d.Year) })
+          .y(function(d) { return +y(d.DomesticMPG) }));  
+
+    //add in import MPG line
+    d3.select(".chart")
+      .append("g")
+      .attr("transform","translate(50,50)")
+      .append("path")
+        .datum(dataMeet)
+        .attr("fill", "none")
+        .attr("stroke", "green")
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+          .x(function(d) { return +x(d.Year) })
+          .y(function(d) { return +y(d.ImportedMPG) }));  
+
+    // mark where lines meet with circle
+    d3.select(".chart")
+      .append("g")
+        .attr("transform","translate(50,50)")
+        .append("circle")
+        .attr("cx",x(2000))
+        .attr("cy",y(28.5))
+        .attr("r",6)
+        .attr("fill","blue");
+   
+  document.getElementById("nextButton").value='Click again to see stays on top';  
+  }
+  // draw the 3rd scene
+  if(slideCount == 2){
+    
+    
+    
+    
+  }
+  slideCount++;
+    
                                                              
 }                                                            
 </script>
