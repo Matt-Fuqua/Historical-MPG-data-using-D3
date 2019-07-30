@@ -13,16 +13,20 @@
 </svg>
   
 <script>
+
   
 // set the dimensions and margins of the graph
 var margin = {top: 50, right: 50, bottom: 50, left: 50},
     width = 600 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
-  
-async function init() {
-  var data = await d3.csv("https://mfuquaedu.github.io/mpgdata.csv");
+
+  var data;
   var y = d3.scaleLinear().domain([20,40]).range([500,0]);
   var x = d3.scaleLinear().domain([1980,2016]).range([0,500]);
+  
+async function init() {
+  data = await d3.csv("https://mfuquaedu.github.io/mpgdata.csv");
+
 /*
   //draw all the circle data points
   d3.select("svg")
@@ -84,16 +88,16 @@ function nextSlide(){
   console.log("hello world");
   d3.select("path").remove();
   
-  var dataset;
-  d3.csv("https://mfuquaedu.github.io/mpgdataMeet.csv", function(error, data){
-    if(error){
-      console.log("unable to load mgpDataMeet.csv");
-    }
-    else{
-       console.log(data);
-      dataset = data;
-    }
-  });
+//  var dataset;
+ // d3.csv("https://mfuquaedu.github.io/mpgdataMeet.csv", function(error, data){
+ //   if(error){
+//      console.log("unable to load mgpDataMeet.csv");
+//    }
+//    else{
+ //      console.log(data);
+ //     dataset = data;
+ //   }
+ // });
   
  
     //add in the lines
@@ -121,11 +125,4 @@ function nextSlide(){
       .attr("d", d3.line()
         .x(function(d) { return +x(d.Year) })
         .y(function(d) { return +y(d.ImportedMPG) }));  
-                                                             
-}
-                                                             
- 
-         
-</script>
-</body>
-</html>
+                                                         
