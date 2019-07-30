@@ -1,19 +1,19 @@
-    
 <html>
 
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <style> 
-//  circle {fill: lightblue; stroke: black; r:5}
+  circle {r:5}
   </style>
 <body onload='init()'>
   
   
 <h1>How has MPG for American made car comparted to foreign made over the years? </h1>
-
+  <p> In the early 80's, it was more about power than gas mileage. But as the
+  years went by, and as demand for fuel efficiantcy grew, US auto manufacutrers had 
+  to adapt and blah blah blach</p>
 <input type="button" value="See next slide" id = nextButton onclick="nextSlide()"</input>  
 
-  <svg class ="chart" width=600 height=600>
-</svg>
+<svg class ="chart" width=600 height=600></svg>
   
 <script>
   
@@ -87,15 +87,14 @@ async function init() {
      .attr("transform","translate(50,550)")
      .call(d3.axisBottom(x).tickFormat(d3.format('')));
   
+  
   } // end of initial load
-
 function nextSlide(){
   console.log(slideCount);
   
   // draw the second scene
   if(slideCount == 1){
     d3.select("path").remove();
-
     //add in domestic MPG line
     d3.select(".chart")
       .append("g")
@@ -108,7 +107,6 @@ function nextSlide(){
         .attr("d", d3.line()
           .x(function(d) { return +x(d.Year) })
           .y(function(d) { return +y(d.DomesticMPG) }));  
-
     //add in import MPG line
     d3.select(".chart")
       .append("g")
@@ -120,23 +118,26 @@ function nextSlide(){
         .attr("stroke-width", 1.5)
         .attr("d", d3.line()
           .x(function(d) { return +x(d.Year) })
-          .y(function(d) { return +y(d.ImportedMPG) }));  
-
+          .y(function(d) { return +y(d.ImportedMPG) })); 
+    
     // mark where lines meet with circle
     d3.select(".chart")
       .append("g")
         .attr("transform","translate(50,50)")
         .append("circle")
+        .attr("id","circleJoin")
         .attr("cx",x(2000))
         .attr("cy",y(28.5))
         .attr("r",6)
         .attr("fill","blue");
-  document.getElementById("nextButton").value='Click again to see stays on top';  
+  document.getElementById("nextButton").value='Click again to see who stays on top';  
   }
   
   // draw the 3rd scene
   if(slideCount == 2){
-    d3.selectAll("path").remove();
+//    d3.selectAll("path").remove();
+    
+    d3.select("#circleJoin").remove();
     //add in all of domestic MPG line
     d3.select(".chart")
       .append("g")
@@ -149,7 +150,6 @@ function nextSlide(){
         .attr("d", d3.line()
           .x(function(d) { return +x(d.Year) })
           .y(function(d) { return +y(d.DomesticMPG) }));  
-
     //add in all of import MPG line
     d3.select(".chart")
       .append("g")
@@ -165,13 +165,13 @@ function nextSlide(){
     
       document.getElementById("nextButton").value='reset'; 
   }
+  
   // reset page
   if(slideCount==3){
  document.location.reload(true);
   }
   
   slideCount++;
-    
                                                              
 }                                                            
 </script>
