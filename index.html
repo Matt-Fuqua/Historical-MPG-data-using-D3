@@ -87,16 +87,32 @@ async function init() {
     .attr("transform","translate(" + margin.left + "," + margin.top + ")")
     .call(d3.axisLeft(y));
   
+  // text label for the y axis
+  d3.select(".chart")
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0)
+      .attr("x",0-600/2)
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Miles Per Gallon (MPG)"); 
+  
   // draw x axis
   d3.select(".chart")
      .append("g")
      .attr("transform","translate(50,550)")
      .call(d3.axisBottom(x).tickFormat(d3.format('')));
-  
+
+  // text label for the x axis
+  d3.select(".chart")
+    .append("text")   
+    .attr("transform",
+          "translate(" + (600/2) + " ," +(600 - 15) + ")")
+      .style("text-anchor", "middle")
+      .text("Year");
   
   } // end of initial load
 function nextSlide(){
-  console.log(slideCount);
   
   // draw the second scene
   if(slideCount == 1){
