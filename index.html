@@ -9,14 +9,18 @@
   <h1>How has MPG for American made car comparted to foreign made over the years? </h1>
   <p> In the early 80's, it was more about power than gas mileage. But as the
   years went by, and as demand for fuel efficiantcy grew, US auto manufacutrers had 
-  to adapt and blah blah blach66</p>
- <input type="button" value="See next slide" id = nextButton onclick="nextSlide()"</input>
-</head>
-<body onload='init()'>
- 
-<svg class ="chart" width=600 height=600></svg>
+  to adapt and blah blah blach</p>
  
   
+</head>
+<body onload='init()'>
+
+<div align="top">
+<input type="button" style="height:30px;width:300px;background-color:lightblue;color:black" value="Can the US catch up? Click to find Out." id = nextButton onclick="nextSlide()"</input>
+</div>  
+<svg class ="chart" width=600 height=600></svg>
+  
+
 <script>
   
 // set the dimensions and margins of the graph
@@ -165,9 +169,9 @@ function nextSlide(){
           .x(function(d) { return +x(d.Year) })
           .y(function(d) { return +y(d.ImportedMPG) })); 
     
-      document.getElementById("nextButton").value='reset'; 
+      document.getElementById("nextButton").value='Start Over'; 
   }
-  
+ 
   // reset page
   if(slideCount==3){
  document.location.reload(true);
