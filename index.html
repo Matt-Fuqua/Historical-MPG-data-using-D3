@@ -7,9 +7,9 @@
   </style>
   
 <head>
-  <h1>How has MPG for American made car comparted to foreign made over the years? </h1>
+  <h1>How has MPG for American made cars compared to foreign made over the years? </h1>
   <p> In the early 80's, it was more about power than gas mileage. But as the
-  years went by, and as demand for fuel efficiantcy grew, US auto manufacutrers had 
+  years went by, and as demand for fuel efficiency grew, US auto manufacutrers had 
   to adapt and blah blah blah</p>
 </head>
 <body onload='init()'>
@@ -17,7 +17,7 @@
 <div align="top">
 <input type="button" style="height:30px;width:300px;background-color:lightblue;color:black" value="Can the US catch up? Click to find Out." id = nextButton onclick="nextSlide()"</input>
 </div>  
-<svg  width=600 height=600 id="chart1"></svg>
+<svg  width=800 height=600 id="chart1"></svg>
   
 <script>
   
@@ -33,6 +33,8 @@
   const makeAnnotationMeet = d3.annotation();
   const makeAnnotationImport = d3.annotation();
   const makeAnnotationDomestic = d3.annotation();
+  const makeAnnotationAVG = d3.annotation();
+  const makeAnnotationFinal = d3.annotation();
   
   
  const annotationMeet = [
@@ -48,12 +50,11 @@
   const annotationImport = [
   {
     note: {
- //     label: "In 1980 imported passenger car at 29.6 MPG",
       title: "In 1980 imported passenger car at 29.6 MPG"
     },
     x: 50,
     y: 310,
-    dy: -100,
+    dy: -40,
     dx: 100
   
   }]
@@ -61,17 +62,34 @@
   const annotationDomestic = [
   {
     note: {
-   //   label: "In 1980 domestic passenger car at 22.6 MPG",
       title: "In 1980 domestic passenger car at 22.6 MPG"
     },
     x: 50,
     y: 485,
-    dy: -50,
+    dy: -40,
     dx: 100
-  }
-] 
- 
-  
+  }] 
+  const annotationAVG = [
+  {
+    note: {
+      title: "Combined AVG MPG"
+    },
+    x: 420,
+    y: 280,
+    dy: 70,
+    dx: 100
+  }]
+  const annotationFinal = [
+  {
+    note: {
+      title: "It continues to be a close race to stay on top of fuel efficiency"
+    },
+    x: 550,
+    y: 100,
+    dy: 70,
+    dx: 100
+  }]
+
 async function init() {
   data = await d3.csv("https://mfuquaedu.github.io/mpgdata.csv");
   dataMeet = await d3.csv("https://mfuquaedu.github.io/mpgdataMeet.csv");
@@ -99,7 +117,6 @@ async function init() {
         .x(function(d) { return +x(d.Year) })
         .y(function(d) { return +y(d.PassengerCarMPG) }));  
   
-  
   // mark where domestic MPG starts in 1980
   d3.select("#chart1")
     .append("g")
@@ -120,7 +137,7 @@ async function init() {
       .attr("r",10)
       .attr("fill","green");
   
- // draw y axis
+  // draw y axis
   d3.select("#chart1")
     .append("g")
     .attr("transform","translate(" + margin.left + "," + margin.top + ")")
@@ -152,6 +169,7 @@ async function init() {
   
   makeAnnotationImport.annotations(annotationImport);
   makeAnnotationDomestic.annotations(annotationDomestic);
+  makeAnnotationAVG.annotations(annotationAVG);
   
   d3.select("#chart1")
     .append("g")
@@ -163,12 +181,12 @@ async function init() {
     .attr("id","annoDomestic")
     .call(makeAnnotationDomestic);
   
-    makeAnnotationMeet.annotations(annotationMeet);
-
-  
-
-  
+  d3.select("#chart1")
+    .append("g")
+    .attr("id","annoAVG")
+    .call(makeAnnotationAVG);  
   } // end of initial load
+  
 function nextSlide(){
   
   // draw the second scene
@@ -176,6 +194,7 @@ function nextSlide(){
     d3.select("path").remove();
     d3.select("#annoDomestic").remove();
     d3.select("#annoImport").remove();
+    d3.select("#annoAVG").remove();
     //add in domestic MPG line
     d3.select("#chart1")
       .append("g")
@@ -218,17 +237,11 @@ function nextSlide(){
   d3.select("#chart1")
     .append("g")
     .attr("id","annoMeet")
-    .call(makeAnnotationMeet);
-  
-
-//<svg width="460" height="400" id="example1"></svg>    
-
+    .call(makeAnnotationMeet);    
   }
   
   // draw the 3rd scene
   if(slideCount == 2){
-//    d3.selectAll("path").remove();
-    
     d3.select("#circleJoin").remove();
     d3.select("#annoMeet").remove();
     //add in all of domestic MPG line
@@ -256,16 +269,20 @@ function nextSlide(){
           .x(function(d) { return +x(d.Year) })
           .y(function(d) { return +y(d.ImportedMPG) })); 
     
-      document.getElementById("nextButton").value='Start Over'; 
+    document.getElementById("nextButton").value='Start Over'; 
+    makeAnnotationFinal.annotations(annotationFinal);
+  
+  d3.select("#chart1")
+    .append("g")
+    .attr("id","annoFinal")
+    .call(makeAnnotationFinal); 
   }
  
   // reset page
   if(slideCount==3){
- document.location.reload(true);
+   document.location.reload(true);
   }
-  
-  slideCount++;
-                                                             
+  slideCount++;                                                         
 }                                                            
 </script>
 </body>
