@@ -1,6 +1,7 @@
 <html>
 
 <script src='https://d3js.org/d3.v5.min.js'></script>
+<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
 <style> 
   circle {r:5}
   </style>
@@ -18,7 +19,7 @@
 <div align="top">
 <input type="button" style="height:30px;width:300px;background-color:lightblue;color:black" value="Can the US catch up? Click to find Out." id = nextButton onclick="nextSlide()"</input>
 </div>  
-<svg class ="chart" width=600 height=600></svg>
+<svg class ="chart" width=600 height=600 id="example1"></svg>
   
 
 <script>
@@ -32,6 +33,20 @@ var margin = {top: 50, right: 50, bottom: 50, left: 50},
   var y = d3.scaleLinear().domain([20,40]).range([500,0]);
   var x = d3.scaleLinear().domain([1980,2016]).range([0,500]);
   var slideCount = 1;
+ const annotations = [
+  {
+    note: {
+      label: "CHECK THIS SHIT OUT MATT!!!!!",
+      title: "Annotation title"
+    },
+    x: 330,
+    y: 340,
+    dy: 100,
+    dx: 100
+  }
+   
+] 
+ 
   
 async function init() {
   data = await d3.csv("https://mfuquaedu.github.io/mpgdata.csv");
@@ -152,7 +167,16 @@ function nextSlide(){
         .attr("cy",y(28.5))
         .attr("r",6)
         .attr("fill","blue");
-  document.getElementById("nextButton").value='Click again to see who stays on top';  
+  document.getElementById("nextButton").value='Click again to see who stays on top'; 
+    
+    const makeAnnotations = d3.annotation()
+  .annotations(annotations)
+  d3.select("#example1")
+  .append("g")
+  .call(makeAnnotations)
+
+//<svg width="460" height="400" id="example1"></svg>    
+
   }
   
   // draw the 3rd scene
