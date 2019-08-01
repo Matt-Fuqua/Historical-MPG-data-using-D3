@@ -1,9 +1,13 @@
-<html>
+   <html>
 
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
-<style> 
-  circle {r:5}
+<script src="d3.legend.js"></script>
+  <style> 
+  circle {r:5;}
+  
+
+  
   </style>
   
 <head>
@@ -32,6 +36,8 @@
   var slideCount = 1;
   const makeAnnotationMeet = d3.annotation();
   const makeAnnotationImport = d3.annotation();
+  const makeAnnotationDomestic2 = d3.annotation();
+  const makeAnnotationImport2 = d3.annotation();
   const makeAnnotationDomestic = d3.annotation();
   const makeAnnotationAVG = d3.annotation();
   const makeAnnotationFinal = d3.annotation();
@@ -54,7 +60,7 @@
     },
     x: 50,
     y: 310,
-    dy: -40,
+    dy: -100,
     dx: 100
   
   }]
@@ -66,9 +72,32 @@
     },
     x: 50,
     y: 485,
-    dy: -40,
+    dy: -20,
     dx: 100
   }] 
+  
+  const annotationImport2 = [
+  {
+    note: {
+      title: "Import"
+    },
+    x: 50,
+    y: 310,
+    dy: -100,
+    dx: 100
+  
+  }]
+ 
+  const annotationDomestic2 = [
+  {
+    note: {
+      title: "Domestic"
+    },
+    x: 50,
+    y: 485,
+    dy: -20,
+    dx: 100
+  }]
   const annotationAVG = [
   {
     note: {
@@ -125,7 +154,7 @@ async function init() {
       .attr("cx",x(1980))
       .attr("cy",y(22.6))
       .attr("r",10)
-      .attr("fill","red");
+      .attr("fill","lightpink");
   
   // mark where import MPG starts in 1980
     d3.select("#chart1")
@@ -135,7 +164,7 @@ async function init() {
       .attr("cx",x(1980))
       .attr("cy",y(29.6))
       .attr("r",10)
-      .attr("fill","green");
+      .attr("fill","lightgreen");
   
   // draw y axis
   d3.select("#chart1")
@@ -166,7 +195,8 @@ async function init() {
           "translate(" + (600/2) + " ," +(600 - 15) + ")")
       .style("text-anchor", "middle")
       .text("Year");
-  
+ 
+
   makeAnnotationImport.annotations(annotationImport);
   makeAnnotationDomestic.annotations(annotationDomestic);
   makeAnnotationAVG.annotations(annotationAVG);
@@ -202,7 +232,7 @@ function nextSlide(){
       .append("path")
         .datum(dataMeet)
         .attr("fill", "none")
-        .attr("stroke", "red")
+        .attr("stroke", "lightpink")
         .attr("stroke-width", 1.5)
         .attr("d", d3.line()
           .x(function(d) { return +x(d.Year) })
@@ -214,11 +244,13 @@ function nextSlide(){
       .append("path")
         .datum(dataMeet)
         .attr("fill", "none")
-        .attr("stroke", "green")
+        .attr("stroke", "lightgreen")
         .attr("stroke-width", 1.5)
         .attr("d", d3.line()
           .x(function(d) { return +x(d.Year) })
           .y(function(d) { return +y(d.ImportedMPG) })); 
+   
+   
     
     // mark where lines meet with circle
     d3.select("#chart1")
@@ -229,15 +261,29 @@ function nextSlide(){
         .attr("cx",x(2000))
         .attr("cy",y(28.5))
         .attr("r",6)
-        .attr("fill","blue");
+        .attr("fill","lightblue");
   document.getElementById("nextButton").value='Click again to see who stays on top'; 
+   
+
     
   makeAnnotationMeet.annotations(annotationMeet);
+  makeAnnotationImport2.annotations(annotationImport2);
+  makeAnnotationDomestic2.annotations(annotationDomestic2);
   
   d3.select("#chart1")
     .append("g")
     .attr("id","annoMeet")
-    .call(makeAnnotationMeet);    
+    .call(makeAnnotationMeet); 
+    
+    d3.select("#chart1")
+    .append("g")
+    .attr("id","annoImport2")
+    .call(makeAnnotationImport2);
+    
+      d3.select("#chart1")
+    .append("g")
+    .attr("id","annoDomestic2")
+    .call(makeAnnotationDomestic2);
   }
   
   // draw the 3rd scene
@@ -251,7 +297,7 @@ function nextSlide(){
       .append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("stroke", "red")
+        .attr("stroke", "lightpink")
         .attr("stroke-width", 1.5)
         .attr("d", d3.line()
           .x(function(d) { return +x(d.Year) })
@@ -263,7 +309,7 @@ function nextSlide(){
       .append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("stroke", "green")
+        .attr("stroke", "lightgreen")
         .attr("stroke-width", 1.5)
         .attr("d", d3.line()
           .x(function(d) { return +x(d.Year) })
