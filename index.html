@@ -9,13 +9,19 @@
   color: black;
   text-align: left;
   font-family: verdana;
-}
+  }
 
   p {
   color: black;
   font-family: verdana;
-  font-size: 20px;
-}
+  font-size: 15pt;
+  }
+  svg {
+    font-family: verdana;
+    font-size: 10pt;
+  }
+
+
 </style>
   
 <head>
@@ -185,6 +191,8 @@ async function init() {
   d3.select("#chart1")
     .append("g")
     .attr("transform","translate(" + margin.left + "," + margin.top + ")")
+    .style("font-family", "verdana")
+    .style("font-size", "12px")
     .call(d3.axisLeft(y));
   
   // text label for the y axis
@@ -195,12 +203,16 @@ async function init() {
       .attr("x",0-600/2)
       .attr("dy", "1em")
       .style("text-anchor", "middle")
+      .style("font-size", "15px")
+      .style("font-family", "verdana")
       .text("Miles Per Gallon (MPG)"); 
   
   // draw x axis
   d3.select("#chart1")
      .append("g")
      .attr("transform","translate(50,550)")
+     .style("font-family", "verdana")
+     .style("font-size", "12px")
      .call(d3.axisBottom(x).tickFormat(d3.format('')));
 
   // text label for the x axis
@@ -208,8 +220,10 @@ async function init() {
     .append("text")   
     .attr("transform",
           "translate(" + (600/2) + " ," +(600 - 15) + ")")
-      .style("text-anchor", "middle")
-      .text("Year");
+    .style("text-anchor", "middle")
+    .style("font-size", "15px")
+    .style("font-family", "verdana")
+    .text("Year");
  
 
   makeAnnotationImport.annotations(annotationImport);
