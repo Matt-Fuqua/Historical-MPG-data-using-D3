@@ -10,7 +10,6 @@
   text-align: left;
   font-family: verdana;
   }
-
   p {
   color: black;
   font-family: verdana;
@@ -20,8 +19,6 @@
     font-family: verdana;
     font-size: 10pt;
   }
-
-
 </style>
   
 <head>
@@ -61,8 +58,15 @@
   
   const description2 = "After slow improvement in fuel efficiency each year, the US caught up with foreign car makers in the year 2000. Once the US matched the fuel efficiency of imports, the race was on to stay on top.";
   const description3 = "As you can see, once the US caught up, after being flat for 20 years foreign car makers fought to stay on top. This kept the pressure on US automakers to continue to make more fuel efficient cars year after year.";
-  
-  
+
+  var tooltip = d3.select("body")
+	.append("div")
+	.style("position", "absolute")
+	.style("z-index", "10")
+	.style("visibility", "hidden")
+     .attr("data-html", "true")
+	.html("In 2000 the top 5 selling cars were:<br>Toyota Camry<br>Honda Accord<br>Ford Taurus<br>Honda Civic<br>Ford Focus");
+
  const annotationMeet = [
   {
     note: {
@@ -139,7 +143,6 @@
     dy: 70,
     dx: 100
   }]
-
 async function init() {
   data = await d3.csv("https://mfuquaedu.github.io/mpgdata.csv");
   dataMeet = await d3.csv("https://mfuquaedu.github.io/mpgdataMeet.csv");
@@ -214,7 +217,6 @@ async function init() {
      .style("font-family", "verdana")
      .style("font-size", "12px")
      .call(d3.axisBottom(x).tickFormat(d3.format('')));
-
   // text label for the x axis
   d3.select("#chart1")
     .append("text")   
@@ -225,7 +227,6 @@ async function init() {
     .style("font-family", "verdana")
     .text("Year");
  
-
   makeAnnotationImport.annotations(annotationImport);
   makeAnnotationDomestic.annotations(annotationDomestic);
   makeAnnotationAVG.annotations(annotationAVG);
@@ -294,7 +295,10 @@ function nextSlide(){
         .attr("cx",x(2000))
         .attr("cy",y(28.5))
         .attr("r",6)
-        .attr("fill","lightblue");
+        .attr("fill","lightblue")
+    .on("mouseover", function(){return tooltip.style("visibility", "visible").style("top",(event.pageY-150)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(){return tooltip.style("visibility", "hidden");});    
+    
   document.getElementById("nextButton").value='Click again to see who stays on top'; 
    
   makeAnnotationMeet.annotations(annotationMeet);
@@ -362,7 +366,7 @@ function nextSlide(){
   if(slideCount==3){
    document.location.reload(true);
   }
-  slideCount++;                                                         
+  slideCount++; 
 }                                                            
 </script>
 </body>
