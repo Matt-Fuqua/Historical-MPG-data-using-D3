@@ -1,0 +1,380 @@
+<html>
+
+<script src='https://d3js.org/d3.v5.min.js'></script>
+<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
+<script src="d3.legend.js"></script>
+<style> 
+  circle {r:5;}
+  h1 {
+  color: black;
+  text-align: left;
+  font-family: verdana;
+  }
+  p {
+  color: black;
+  font-family: verdana;
+  font-size: 15pt;
+  }
+  svg {
+    font-weight:bold;
+    color: grey;
+    font-family: verdana;
+    font-size: 10pt;
+  }
+  div{
+    font-weight:bold;
+    color: grey;
+    font-family: verdana;
+    font-size: 8pt;
+  }
+</style>
+ 
+<head>
+  <h1>How has MPG for American made cars compared to imports over the years? </h1>
+  <p id="description"> In the early 80's, it was more about power than gas mileage. But as the
+  years went by, and as demand for fuel efficiency grew, US auto manufacutrers had to 
+  adapt to stay competitive. This change did not happen overnight.</p>
+</head>
+
+<body onload='init()'>
+
+<div align="top">
+<input type="button" style="height:30px;width:300px;background-color:lightblue;color:black" value="Can the US catch up? Click to find out." id = nextButton onclick="nextSlide()"</input>
+
+</div>  
+<svg  width=800 height=600 id="chart1"></svg>
+ 
+  
+<script>
+  
+  // set the dimensions and margins of the graph
+  var margin = {top: 50, right: 50, bottom: 50, left: 50},
+      width = 600 - margin.left - margin.right,
+      height = 600 - margin.top - margin.bottom;
+  var data;
+  var dataMeet;
+  var y = d3.scaleLinear().domain([20,40]).range([500,0]);
+  var x = d3.scaleLinear().domain([1980,2016]).range([0,500]);
+  var slideCount = 1;
+  const makeAnnotationMeet = d3.annotation();
+  const makeAnnotationImport = d3.annotation();
+  const makeAnnotationDomestic2 = d3.annotation();
+  const makeAnnotationImport2 = d3.annotation();
+  const makeAnnotationDomestic = d3.annotation();
+  const makeAnnotationAVG = d3.annotation();
+  const makeAnnotationFinal = d3.annotation();
+  
+  const description2 = "After slow improvement in fuel efficiency each year, the US caught up with foreign car makers in the year 2000. Once the US matched the fuel efficiency of imports, the race was on to stay on top.";
+  const description3 = "As you can see, once the US caught up, after being flat for 20 years foreign car makers fought to stay on top. This kept the pressure on US automakers to continue to make more fuel efficient cars year after year.";
+
+  var tooltip = d3.select("body")
+	.append("div")
+	.style("position", "absolute")
+	.style("z-index", "10")
+	.style("visibility", "hidden")
+     .attr("data-html", "true")
+	.html("In 2000 the top 5 selling cars were:<br>Toyota Camry<br>Honda Accord<br>Ford Taurus<br>Honda Civic<br>Ford Focus");
+
+ const annotationMeet = [
+  {
+    note: {
+      title: "It took US automakers 20 years to catch up to foreign competition (mostly Japan) in fuel efficiency"
+    },
+    x: 330,
+    y: 340,
+    dy: 50,
+    dx: 100
+  }]
+  const annotationImport = [
+  {
+   
+    note: {
+      title: "In 1980 imported passenger car was 29.6 MPG"
+    },
+    x: 50,
+    y: 310,
+    dy: -100,
+    dx: 100
+  
+  }]
+ 
+  const annotationDomestic = [
+  {
+    note: {
+      title: "In 1980 domestic passenger car was 22.6 MPG"
+    },
+    x: 50,
+    y: 485,
+    dy: -20,
+    dx: 100
+  }] 
+  
+  const annotationImport2 = [
+  {
+    note: {
+      title: "Import"
+    },
+    x: 50,
+    y: 310,
+    dy: -100,
+    dx: 100
+  
+  }]
+ 
+  const annotationDomestic2 = [
+  {
+    note: {
+      title: "Domestic"
+    },
+    x: 50,
+    y: 485,
+    dy: -20,
+    dx: 100
+  }]
+  const annotationAVG = [
+  {
+    note: {
+      title: "Combined AVG MPG"
+    },
+    x: 420,
+    y: 280,
+    dy: 70,
+    dx: 100
+  }]
+  const annotationFinal = [
+  {
+    note: {
+      title: "It continues to be a close race to stay on top of fuel efficiency"
+    },
+    x: 550,
+    y: 100,
+    dy: 70,
+    dx: 100
+  }]
+async function init() {
+  data = await d3.csv("https://mfuquaedu.github.io/mpgdata.csv");
+  dataMeet = await d3.csv("https://mfuquaedu.github.io/mpgdataMeet.csv");
+/*
+  //draw all the circle data points
+  d3.select("#chart1")
+    .append("g")
+    .attr("transform","translate(" + margin.left + "," + margin.top + ")")
+    .selectAll("circle").data(data).enter()
+    .append("circle")
+      .attr("cx",function(d){return x(+d.Year);})
+      .attr("cy",function(d){return y(+d.PassengerCarMPG);})
+      .attr("r",2);
+ */
+  // avg mpg line
+  d3.select("#chart1")
+    .append("g")
+    .attr("transform","translate(" + margin.left + "," + margin.top + ")")   .attr("transform","translate(50,50)")
+    .append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "lightblue")
+      .attr("stroke-width", 1.5)
+      .attr("d", d3.line()
+        .x(function(d) { return +x(d.Year) })
+        .y(function(d) { return +y(d.PassengerCarMPG) }));  
+  
+  // mark where domestic MPG starts in 1980
+  d3.select("#chart1")
+    .append("g")
+      .attr("transform","translate(" + margin.left + "," + margin.top + ")")
+      .append("circle")
+      .attr("cx",x(1980))
+      .attr("cy",y(22.6))
+      .attr("r",10)
+      .attr("fill","lightpink");
+  
+  // mark where import MPG starts in 1980
+    d3.select("#chart1")
+    .append("g")
+      .attr("transform","translate(" + margin.left + "," + margin.top + ")")
+      .append("circle")
+      .attr("cx",x(1980))
+      .attr("cy",y(29.6))
+      .attr("r",10)
+      .attr("fill","lightgreen");
+  
+  // draw y axis
+  d3.select("#chart1")
+    .append("g")
+    .attr("transform","translate(" + margin.left + "," + margin.top + ")")
+    .style("font-family", "verdana")
+    .style("font-size", "12px")
+    .call(d3.axisLeft(y));
+  
+  // text label for the y axis
+  d3.select("#chart1")
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0)
+      .attr("x",0-600/2)
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .style("font-size", "15px")
+      .style("font-family", "verdana")
+      .text("Miles Per Gallon (MPG)"); 
+  
+  // draw x axis
+  d3.select("#chart1")
+     .append("g")
+     .attr("transform","translate(50,550)")
+     .style("font-family", "verdana")
+     .style("font-size", "12px")
+     .call(d3.axisBottom(x).tickFormat(d3.format('')));
+  // text label for the x axis
+  d3.select("#chart1")
+    .append("text")   
+    .attr("transform",
+          "translate(" + (600/2) + " ," +(600 - 15) + ")")
+    .style("text-anchor", "middle")
+    .style("font-size", "15px")
+    .style("font-family", "verdana")
+    .text("Year");
+ 
+  makeAnnotationImport.annotations(annotationImport);
+  makeAnnotationDomestic.annotations(annotationDomestic);
+  makeAnnotationAVG.annotations(annotationAVG);
+  
+  d3.select("#chart1")
+    .append("g")
+    .attr("id","annoImport")
+    .call(makeAnnotationImport);
+  
+  d3.select("#chart1")
+    .append("g")
+    .attr("id","annoDomestic")
+    .call(makeAnnotationDomestic);
+  
+  d3.select("#chart1")
+    .append("g")
+    .attr("id","annoAVG")
+    .call(makeAnnotationAVG);  
+  } // end of initial load
+  
+function nextSlide(){
+  
+  // draw the second scene
+  if(slideCount == 1){
+    d3.select("path").remove();
+    d3.select("#annoDomestic").remove();
+    d3.select("#annoImport").remove();
+    d3.select("#annoAVG").remove();
+    
+    d3.select("#description")
+    .text(description2);
+    
+    //add in domestic MPG line
+    d3.select("#chart1")
+      .append("g")
+      .attr("transform","translate(50,50)")
+      .append("path")
+        .datum(dataMeet)
+        .attr("fill", "none")
+        .attr("stroke", "lightpink")
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+          .x(function(d) { return +x(d.Year) })
+          .y(function(d) { return +y(d.DomesticMPG) }));  
+    //add in import MPG line
+    d3.select("#chart1")
+      .append("g")
+      .attr("transform","translate(50,50)")
+      .append("path")
+        .datum(dataMeet)
+        .attr("fill", "none")
+        .attr("stroke", "lightgreen")
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+          .x(function(d) { return +x(d.Year) })
+          .y(function(d) { return +y(d.ImportedMPG) })); 
+   
+   
+    
+    // mark where lines meet with circle
+    d3.select("#chart1")
+      .append("g")
+        .attr("transform","translate(50,50)")
+        .append("circle")
+        .attr("id","circleJoin")
+        .attr("cx",x(2000))
+        .attr("cy",y(28.5))
+        .attr("r",6)
+        .attr("fill","lightblue")
+        .on("mouseover", function(){return tooltip.style("visibility", "visible").style("top",(event.pageY-150)+"px").style("left",(event.pageX-30)+"px");})
+        .on("mouseout", function(){return tooltip.style("visibility", "hidden");});    
+    
+  document.getElementById("nextButton").value='Click again to see who stays on top'; 
+   
+  makeAnnotationMeet.annotations(annotationMeet);
+  makeAnnotationImport2.annotations(annotationImport2);
+  makeAnnotationDomestic2.annotations(annotationDomestic2);
+  
+  d3.select("#chart1")
+    .append("g")
+    .attr("id","annoMeet")
+    .call(makeAnnotationMeet); 
+    
+  d3.select("#chart1")
+    .append("g")
+    .attr("id","annoImport2")
+    .call(makeAnnotationImport2);
+    
+  d3.select("#chart1")
+    .append("g")
+    .attr("id","annoDomestic2")
+    .call(makeAnnotationDomestic2);
+  }  
+  // draw the 3rd scene
+  if(slideCount == 2){
+//    d3.select("#circleJoin").remove();
+//    d3.select("#annoMeet").remove();
+ 
+    d3.select("#description")
+      .text(description3);
+    //add in all of domestic MPG line
+    d3.select("#chart1")
+      .append("g")
+      .attr("transform","translate(" + margin.left + "," + margin.top + ")")
+      .append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "lightpink")
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+          .x(function(d) { return +x(d.Year) })
+          .y(function(d) { return +y(d.DomesticMPG) }));  
+    //add in all of import MPG line
+    d3.select("#chart1")
+      .append("g")
+      .attr("transform","translate(" + margin.left + "," + margin.top + ")")
+      .append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "lightgreen")
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+          .x(function(d) { return +x(d.Year) })
+          .y(function(d) { return +y(d.ImportedMPG) })); 
+    
+    document.getElementById("nextButton").value='Start Over'; 
+    makeAnnotationFinal.annotations(annotationFinal);
+  
+  d3.select("#chart1")
+    .append("g")
+    .attr("id","annoFinal")
+    .call(makeAnnotationFinal); 
+  }
+ 
+  // reset page
+  if(slideCount==3){
+   document.location.reload(true);
+  }
+  slideCount++; 
+}                                                            
+</script>
+</body>
+</html>
