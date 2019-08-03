@@ -4,7 +4,8 @@
 <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
 <script src="d3.legend.js"></script>
 <style> 
-  circle {r:5;}
+
+  circle {r:6;}
   h1 {
   color: black;
   text-align: left;
@@ -14,6 +15,7 @@
   color: black;
   font-family: verdana;
   font-size: 15pt;
+  background-color: #f1f1f1;
   }
   svg {
     font-weight:bold;
@@ -66,25 +68,40 @@
   
   const description2 = "After slow improvement in fuel efficiency each year, the US caught up with foreign car makers in the year 2000. Once the US matched the fuel efficiency of imports, the race was on to stay on top.";
   const description3 = "As you can see, once the US caught up, after being flat for 20 years foreign car makers fought to stay on top. This kept the pressure on US automakers to continue to make more fuel efficient cars year after year.";
-
-  var tooltipMeet = d3.select("body")
+ 
+  var tooltip2000 = d3.select("body")
 	.append("div")
 	.style("position", "absolute")
 	.style("z-index", "10")
 	.style("visibility", "hidden")
      .attr("data-html", "true")
 	.html("In 2000 the top 5 selling vehicles were:<br>Toyota Camry 422k<br>Honda Accord 404k<br>Ford Taurus 382k<br>Honda Civic 324k<br>Ford Focus 286k");
-
-    var tooltip85 = d3.select("body")
+  
+  var tooltip85 = d3.select("body")
 	.append("div")
 	.style("position", "absolute")
 	.style("z-index", "10")
 	.style("visibility", "hidden")
      .attr("data-html", "true")
 	.html("In 1985 the top 5 selling vehicles were:<br>Ford F-Series 537k<br>Chevy Cavalier 422k <br>Ford Escort 410k<br>Chevy Celebrity 360k<br>Oldsmobile Ciera 315k");
-
-
- const annotationMeet = [
+ 
+   var tooltip2010 = d3.select("body")
+	.append("div")
+	.style("position", "absolute")
+	.style("z-index", "10")
+	.style("visibility", "hidden")
+     .attr("data-html", "true")
+	.html("In 2010 the top 5 selling vehicles were:<br>Toyota Camry 327k<br>Honda Accord 311k <br>Toyota Corolla 266k<br>Honda Civic 260k<br>Nissan Altima 229k");
+ 
+   var tooltip2015 = d3.select("body")
+	.append("div")
+	.style("position", "absolute")
+	.style("z-index", "10")
+	.style("visibility", "hidden")
+     .attr("data-html", "true")
+	.html("In 2015 the top 5 selling vehicles were:<br>Toyota Camry 429k<br>Toyota Corolla 363k <br>Honda Accord 355k<br>Honda Civic 335k<br>Nissan Altima 333k");
+ 
+  const annotationMeet = [
   {
     note: {
       title: "It took US automakers 20 years to catch up to foreign competition (mostly Japan) in fuel efficiency"
@@ -145,10 +162,10 @@
     note: {
       title: "Combined AVG MPG"
     },
-    x: 420,
-    y: 280,
-    dy: 70,
-    dx: 100
+    x: 220,
+    y: 350,
+    dy: 90,
+    dx: 80
   }]
   const annotationFinal = [
   {
@@ -159,6 +176,7 @@
     y: 100,
     dy: 70,
     dx: 100
+    
   }]
 async function init() {
   data = await d3.csv("https://mfuquaedu.github.io/mpgdata.csv");
@@ -206,7 +224,7 @@ async function init() {
       .attr("cy",y(29.6))
       .attr("r",10)
       .attr("fill","lightgreen");
-  
+
     // mark circle on 1985 for tooltip
     d3.select("#chart1")
       .append("g")
@@ -219,7 +237,6 @@ async function init() {
         .attr("fill","lightblue")
         .on("mouseover", function(){return tooltip85.style("visibility", "visible").style("top",(event.pageY-100)+"px").style("left",(event.pageX-10)+"px");})
         .on("mouseout", function(){return tooltip85.style("visibility", "hidden");});    
-  
   
   // draw y axis
   d3.select("#chart1")
@@ -277,15 +294,16 @@ async function init() {
     .attr("id","annoAVG")
     .call(makeAnnotationAVG);  
   } // end of initial load
-  
+ 
 function nextSlide(){
   
+// **************************** SECOND SCENE ************************** //  
   // draw the second scene
   if(slideCount == 1){
-    d3.select("path").remove();
+ //   d3.select("path").remove();
     d3.select("#annoDomestic").remove();
     d3.select("#annoImport").remove();
-    d3.select("#annoAVG").remove();
+//    d3.select("#annoAVG").remove();
     
     d3.select("#description")
     .text(description2);
@@ -302,6 +320,7 @@ function nextSlide(){
         .attr("d", d3.line()
           .x(function(d) { return +x(d.Year) })
           .y(function(d) { return +y(d.DomesticMPG) }));  
+    
     //add in import MPG line
     d3.select("#chart1")
       .append("g")
@@ -325,8 +344,8 @@ function nextSlide(){
         .attr("cy",y(28.5))
         .attr("r",6)
         .attr("fill","lightblue")
-        .on("mouseover", function(){return tooltipMeet.style("visibility", "visible").style("top",(event.pageY-150)+"px").style("left",(event.pageX-30)+"px");})
-        .on("mouseout", function(){return tooltipMeet.style("visibility", "hidden");});    
+        .on("mouseover", function(){return tooltip2000.style("visibility", "visible").style("top",(event.pageY-200)+"px").style("left",(event.pageX-90)+"px");})
+        .on("mouseout", function(){return tooltip2000.style("visibility", "hidden");});    
     
   document.getElementById("nextButton").value='Click again to see who stays on top'; 
    
@@ -349,7 +368,7 @@ function nextSlide(){
     .attr("id","annoDomestic2")
     .call(makeAnnotationDomestic2);
   }  
-  // draw the 3rd scene
+// **************************** THIRD SCENE ************************** // 
   if(slideCount == 2){
 //    d3.select("#circleJoin").remove();
 //    d3.select("#annoMeet").remove();
@@ -357,6 +376,33 @@ function nextSlide(){
     d3.select("#description")
       .text(description3);
     //add in all of domestic MPG line
+    
+   // mark circle on 2010 for tooltip
+    d3.select("#chart1")
+      .append("g")
+        .attr("transform","translate(50,50)")
+        .append("circle")
+        .attr("id","circle85")
+        .attr("cx",x(2010))
+        .attr("cy",y(33.9))
+        .attr("r",6)
+        .attr("fill","lightblue")
+        .on("mouseover", function(){return tooltip2010.style("visibility", "visible").style("top",(event.pageY-150)+"px").style("left",(event.pageX-150)+"px");})
+        .on("mouseout", function(){return tooltip2010.style("visibility", "hidden");});    
+    
+    // mark circle on 2015 for tooltip
+    d3.select("#chart1")
+      .append("g")
+        .attr("transform","translate(50,50)")
+        .append("circle")
+        .attr("id","circle85")
+        .attr("cx",x(2015))
+        .attr("cy",y(37.2))
+        .attr("r",6)
+        .attr("fill","lightblue")
+        .on("mouseover", function(){return tooltip2015.style("visibility", "visible").style("top",(event.pageY-50)+"px").style("left",(event.pageX-200)+"px");})
+        .on("mouseout", function(){return tooltip2015.style("visibility", "hidden");});    
+  
     d3.select("#chart1")
       .append("g")
       .attr("transform","translate(" + margin.left + "," + margin.top + ")")
@@ -390,7 +436,7 @@ function nextSlide(){
     .call(makeAnnotationFinal); 
   }
  
-  // reset page
+// **************************** RESET PAGE ************************** // 
   if(slideCount==3){
    document.location.reload(true);
   }
