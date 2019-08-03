@@ -4,7 +4,6 @@
 <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
 <script src="d3.legend.js"></script>
 <style> 
-
   circle {r:6;}
   h1 {
   color: black;
@@ -36,6 +35,7 @@
   <p id="description"> In the early 80's, it was more about power than gas mileage. But as the
   years went by, and as demand for fuel efficiency grew, US auto manufacutrers had to 
   adapt to stay competitive. This change did not happen overnight.</p>
+  <p>Put the mouse over any blue dot on the blue line to see the top 5 selling cars in the US at that time and how many were sold. </p
 </head>
 
 <body onload='init()'>
@@ -90,7 +90,7 @@
 	.style("position", "absolute")
 	.style("z-index", "10")
 	.style("visibility", "hidden")
-     .attr("data-html", "true")
+    .attr("data-html", "true")
 	.html("In 2010 the top 5 selling vehicles were:<br>Toyota Camry 327k<br>Honda Accord 311k <br>Toyota Corolla 266k<br>Honda Civic 260k<br>Nissan Altima 229k");
  
    var tooltip2015 = d3.select("body")
@@ -224,7 +224,7 @@ async function init() {
       .attr("cy",y(29.6))
       .attr("r",10)
       .attr("fill","lightgreen");
-
+  
     // mark circle on 1985 for tooltip
     d3.select("#chart1")
       .append("g")
@@ -235,7 +235,7 @@ async function init() {
         .attr("cy",y(27.6))
         .attr("r",6)
         .attr("fill","lightblue")
-        .on("mouseover", function(){return tooltip85.style("visibility", "visible").style("top",(event.pageY-100)+"px").style("left",(event.pageX-10)+"px");})
+        .on("mouseover", function(){return tooltip85.style("visibility", "visible").style("top",(event.pageY-300)+"px").style("left",(event.pageX+150)+"px");})
         .on("mouseout", function(){return tooltip85.style("visibility", "hidden");});    
   
   // draw y axis
@@ -320,7 +320,7 @@ function nextSlide(){
         .attr("d", d3.line()
           .x(function(d) { return +x(d.Year) })
           .y(function(d) { return +y(d.DomesticMPG) }));  
-    
+   
     //add in import MPG line
     d3.select("#chart1")
       .append("g")
@@ -339,7 +339,6 @@ function nextSlide(){
       .append("g")
         .attr("transform","translate(50,50)")
         .append("circle")
-        .attr("id","circleJoin")
         .attr("cx",x(2000))
         .attr("cy",y(28.5))
         .attr("r",6)
@@ -382,7 +381,6 @@ function nextSlide(){
       .append("g")
         .attr("transform","translate(50,50)")
         .append("circle")
-        .attr("id","circle85")
         .attr("cx",x(2010))
         .attr("cy",y(33.9))
         .attr("r",6)
@@ -395,9 +393,8 @@ function nextSlide(){
       .append("g")
         .attr("transform","translate(50,50)")
         .append("circle")
-        .attr("id","circle85")
-        .attr("cx",x(2015))
-        .attr("cy",y(37.2))
+        .attr("cx",x(2016))
+        .attr("cy",y(37.5))
         .attr("r",6)
         .attr("fill","lightblue")
         .on("mouseover", function(){return tooltip2015.style("visibility", "visible").style("top",(event.pageY-50)+"px").style("left",(event.pageX-200)+"px");})
@@ -414,6 +411,7 @@ function nextSlide(){
         .attr("d", d3.line()
           .x(function(d) { return +x(d.Year) })
           .y(function(d) { return +y(d.DomesticMPG) }));  
+    
     //add in all of import MPG line
     d3.select("#chart1")
       .append("g")
