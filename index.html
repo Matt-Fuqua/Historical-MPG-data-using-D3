@@ -2,7 +2,6 @@
 
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
-<script src="d3.legend.js"></script>
 <style> 
   circle {r:6;}
   h1 {
@@ -44,7 +43,7 @@
 <input type="button" style="height:30px;width:300px;background-color:lightblue;color:black" value="Can the US catch up? Click to find out." id = nextButton onclick="nextSlide()"</input>
 
 </div>  
-<svg  width=900 height=600 id="chart1"></svg>
+<svg  width=1000 height=700 id="chart1"></svg>
  
   
 <script>
@@ -56,7 +55,7 @@
   var data;
   var dataMeet;
   var y = d3.scaleLinear().domain([20,40]).range([500,0]);
-  var x = d3.scaleLinear().domain([1980,2016]).range([0,800]);
+  var x = d3.scaleLinear().domain([1980,2016]).range([0,900]);
   var slideCount = 1;
   const makeAnnotationMeet = d3.annotation();
   const makeAnnotationImport = d3.annotation();
