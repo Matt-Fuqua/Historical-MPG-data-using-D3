@@ -44,19 +44,19 @@
 <input type="button" style="height:30px;width:300px;background-color:lightblue;color:black" value="Can the US catch up? Click to find out." id = nextButton onclick="nextSlide()"</input>
 
 </div>  
-<svg  width=800 height=600 id="chart1"></svg>
+<svg  width=900 height=600 id="chart1"></svg>
  
   
 <script>
   
   // set the dimensions and margins of the graph
   var margin = {top: 50, right: 50, bottom: 50, left: 50},
-      width = 600 - margin.left - margin.right,
+      width = 900 - margin.left - margin.right,
       height = 600 - margin.top - margin.bottom;
   var data;
   var dataMeet;
   var y = d3.scaleLinear().domain([20,40]).range([500,0]);
-  var x = d3.scaleLinear().domain([1980,2016]).range([0,500]);
+  var x = d3.scaleLinear().domain([1980,2016]).range([0,800]);
   var slideCount = 1;
   const makeAnnotationMeet = d3.annotation();
   const makeAnnotationImport = d3.annotation();
